@@ -48,7 +48,7 @@ export function Board({ cells, onCellClick, disabled, winner, isNext, size='md' 
           className="absolute inset-0 flex items-center justify-center bg-neutral-900/40 backdrop-blur-[1px] z-10"
         >
           {winner && (
-            <PlayerSymbol player={winner} className="w-[70%] h-[70%]" />
+            <PlayerSymbol player={winner} className="w-[70%] h-[70%]" slow={true} />
           )}
         </motion.div>
       )}

@@ -1,11 +1,31 @@
+import { useState, useEffect } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useGameStore } from '@/store/gameStore';
+import { PlayerSymbol } from './PlayerSymbol';
+import type { Player } from '@/lib/game/types';
 import { GameControls } from './GameControls';
+import { cn } from '@/lib/utils';
 
 interface GameCanvasProps {
   children: React.ReactNode;
 }
 
 export function GameCanvas({ children }: GameCanvasProps) {
+  const { winner, resetGame } = useGameStore();
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    if (winner) {
+      const timer = setTimeout(() => {
+        setShowOverlay(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowOverlay(false);
+    }
+  }, [winner]);
+
   return (
     <div className="w-full h-screen bg-neutral-900 overflow-hidden relative text-white">
       <TransformWrapper
@@ -25,6 +45,63 @@ export function GameCanvas({ children }: GameCanvasProps) {
           </TransformComponent>
         </>
       </TransformWrapper>
+
+      {/* Global Victory Screen Overlay */}
+      <AnimatePresence>
+        {winner && showOverlay && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 flex items-center justify-center bg-neutral-950/80 backdrop-blur-sm z-50 pointer-events-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", bounce: 0.5 }}
+              className="flex flex-col items-center gap-6"
+            >
+              <h2 className="text-4xl font-black tracking-[0.2em] text-white drop-shadow-lg">
+                {winner === 'DRAW' ? 'DRAW' : 'VICTORY'}
+              </h2>
+
+              {winner !== 'DRAW' && (
+                <div className="relative">
+                  <div className={cn(
+                    "absolute inset-0 blur-3xl opacity-50",
+                    winner === 'X' ? "bg-blue-500" : "bg-red-500"
+                  )} />
+                  <PlayerSymbol
+                    player={winner as Player}
+                    className={cn(
+                      "w-32 h-32 md:w-48 md:h-48 relative z-10 drop-shadow-2xl",
+                      winner === 'X' ? "text-blue-500" : "text-red-500"
+                    )}
+                  />
+                </div>
+              )}
+
+              <div className="flex gap-4 mt-4 relative z-20">
+                <button
+                  onClick={resetGame}
+                  className={cn(
+                    "px-6 py-2 rounded-full font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-lg",
+                    winner === 'X' || winner === 'DRAW' ? "bg-blue-600 hover:bg-blue-500" : "bg-red-600 hover:bg-red-500"
+                  )}
+                >
+                  New Game
+                </button>
+                <button
+                  onClick={() => setShowOverlay(false)}
+                  className="px-6 py-2 rounded-full font-bold text-white/80 border-2 border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+                >
+                  Review Board
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

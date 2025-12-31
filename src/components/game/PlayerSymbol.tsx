@@ -6,9 +6,13 @@ interface PlayerSymbolProps {
   player: Player;
   className?: string;
   animate?: boolean;
+  slow?: boolean;
 }
 
-export function PlayerSymbol({ player, className, animate = true }: PlayerSymbolProps) {
+export function PlayerSymbol({ player, className, animate = true, slow = false }: PlayerSymbolProps) {
+  const duration = slow ? (player === 'X' ? 0.8 : 1.0) : (player === 'X' ? 0.25 : 0.3);
+  const xDelay = slow ? 0.4 : 0.1;
+
   if (player === 'X') {
     return (
       <svg viewBox="0 0 100 100" className={cn("drop-shadow-sm overflow-visible", className)}>
@@ -21,7 +25,7 @@ export function PlayerSymbol({ player, className, animate = true }: PlayerSymbol
           className="stroke-blue-500"
           initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
           animate={animate ? { pathLength: 1, opacity: 1 } : undefined}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          transition={{ duration, ease: "easeOut" }}
         />
         <motion.path
           d="M75,25 L25,75"
@@ -32,7 +36,7 @@ export function PlayerSymbol({ player, className, animate = true }: PlayerSymbol
           className="stroke-blue-500"
           initial={animate ? { pathLength: 0, opacity: 0 } : { pathLength: 1, opacity: 1 }}
           animate={animate ? { pathLength: 1, opacity: 1 } : undefined}
-          transition={{ duration: 0.25, ease: "easeOut", delay: animate ? 0.1 : 0 }}
+          transition={{ duration, ease: "easeOut", delay: animate ? xDelay : 0 }}
         />
       </svg>
     );
@@ -50,7 +54,7 @@ export function PlayerSymbol({ player, className, animate = true }: PlayerSymbol
         className="stroke-red-500"
         initial={animate ? { pathLength: 0, opacity: 0, rotate: -90 } : { pathLength: 1, opacity: 1, rotate: -90 }}
         animate={animate ? { pathLength: 1, opacity: 1, rotate: -90 } : undefined}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        transition={{ duration, ease: "easeOut" }}
       />
     </svg>
   );

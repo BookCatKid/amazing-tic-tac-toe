@@ -5,7 +5,7 @@ import { useGameStore } from '@/store/gameStore';
 import type { GameMode } from '@/lib/game/types';
 
 export function GameControls() {
-  const { mode, resetGame, currentPlayer, winner } = useGameStore();
+  const { mode, resetGame, currentPlayer } = useGameStore();
   const { zoomIn, zoomOut } = useControls();
   const navigate = useNavigate();
 
@@ -56,22 +56,7 @@ export function GameControls() {
         </button>
       </div>
 
-      {/* Winner overlay */}
-      {winner && (
-        <div className="absolute inset-x-0 top-20 flex justify-center pointer-events-auto">
-          <div className="p-6 bg-neutral-800 rounded-lg text-center">
-            <h2 className="text-3xl font-bold mb-4">
-              {winner === 'DRAW' ? "Draw!" : `${winner} Wins!`}
-            </h2>
-            <button
-              className="px-6 py-2 bg-white text-black font-medium rounded hover:bg-neutral-200"
-              onClick={resetGame}
-            >
-              Play Again
-            </button>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

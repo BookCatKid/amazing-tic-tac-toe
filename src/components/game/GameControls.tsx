@@ -3,6 +3,13 @@ import { useControls } from 'react-zoom-pan-pinch';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import type { GameMode } from '@/lib/game/types';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function GameControls() {
   const { mode, resetGame, currentPlayer } = useGameStore();
@@ -23,14 +30,15 @@ export function GameControls() {
           </button>
         </Link>
 
-        <select
-          value={mode}
-          onChange={(e) => handleModeChange(e.target.value as GameMode)}
-          className="px-3 py-2 bg-neutral-800 hover:bg-neutral-700 rounded text-sm"
-        >
-          <option value="classic">Classic</option>
-          <option value="ultimate">Ultimate</option>
-        </select>
+        <Select value={mode} onValueChange={(value: string) => handleModeChange(value as GameMode)}>
+          <SelectTrigger className="bg-neutral-800 hover:bg-neutral-700 px-3 py-2 h-auto border-0">
+            <SelectValue placeholder="Select mode" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="classic">Classic</SelectItem>
+            <SelectItem value="ultimate">Ultimate</SelectItem>
+          </SelectContent>
+        </Select>
 
         <button
           className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded"

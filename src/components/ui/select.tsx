@@ -18,7 +18,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
              <button
                 ref={ref}
                 onClick={() => setOpen(!open)}
-                className={`flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+                className={`flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
                 {...props}
              >
                 {children}
@@ -31,7 +31,7 @@ SelectTrigger.displayName = "SelectTrigger"
 
 const SelectValue = React.forwardRef<HTMLSpanElement, { placeholder?: string }>(({ placeholder }, ref) => {
   const { value } = React.useContext(SelectContext);
-  return <span ref={ref}>{value === 'classic' ? "Classic Tic Tac Toe" : value === 'ultimate' ? "Ultimate Tic Tac Toe" : placeholder}</span>
+  return <span ref={ref}>{value === 'classic' ? "Classic" : value === 'ultimate' ? "Ultimate" : placeholder}</span>
 })
 SelectValue.displayName = "SelectValue"
 
@@ -40,7 +40,7 @@ const SelectContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
         <SelectContextConsumer>
             {({ open }: any) => (
                 open ? (
-                    <div ref={ref} className="absolute top-12 left-0 w-full bg-popover text-popover-foreground border rounded-md shadow-md z-50 p-1 min-w-[8rem] animate-in fade-in zoom-in-95 duration-200">
+                    <div ref={ref} className="absolute top-12 left-0 w-full bg-neutral-800 text-white rounded-md shadow-md z-50 p-1 min-w-[8rem] animate-in fade-in zoom-in-95 duration-200">
                         {children}
                     </div>
                 ) : null
@@ -56,7 +56,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, { value: any } & React.HTMLA
        <div
          ref={ref}
          onClick={() => { onValueChange(value); setOpen(false); }}
-         className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground ${className}`}
+         className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-neutral-700 hover:text-white ${className}`}
          {...props}
        >
            {children}

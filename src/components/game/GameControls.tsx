@@ -6,7 +6,7 @@ import type { GameMode } from '@/lib/game/types';
 
 export function GameControls() {
   const { mode, resetGame, currentPlayer, winner } = useGameStore();
-  const { zoomIn, zoomOut, resetTransform } = useControls();
+  const { zoomIn, zoomOut } = useControls();
   const navigate = useNavigate();
 
   const handleModeChange = (newMode: GameMode) => {

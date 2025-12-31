@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { PlayerSymbol } from './PlayerSymbol';
 import type { Player } from '@/lib/game/types';
 
 interface CellProps {
@@ -12,9 +13,9 @@ interface CellProps {
 
 export function Cell({ value, onClick, disabled, size = 'md' }: CellProps) {
   const sizeClasses = {
-    sm: "w-8 h-8 text-lg",
-    md: "w-14 h-14 text-2xl",
-    lg: "w-24 h-24 text-5xl"
+    sm: "w-8 h-8",
+    md: "w-14 h-14",
+    lg: "w-24 h-24"
   };
 
   return (
@@ -32,13 +33,7 @@ export function Cell({ value, onClick, disabled, size = 'md' }: CellProps) {
       )}
     >
       {value && (
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        >
-          {value}
-        </motion.span>
+        <PlayerSymbol player={value} className="w-[65%] h-[65%]" />
       )}
     </motion.button>
   );

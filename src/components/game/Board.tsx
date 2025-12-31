@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { Cell } from './Cell';
+import { PlayerSymbol } from './PlayerSymbol';
 import { motion } from 'framer-motion';
 import type { BoardState, Player } from '@/lib/game/types';
 
@@ -13,7 +14,6 @@ interface BoardProps {
 }
 
 export function Board({ cells, onCellClick, disabled, winner, isNext, size='md' }: BoardProps) {
-  const winnerTextSize = size === 'sm' ? "text-4xl" : size === 'md' ? "text-6xl" : "text-9xl";
 
   return (
     <div className={cn(
@@ -47,13 +47,9 @@ export function Board({ cells, onCellClick, disabled, winner, isNext, size='md' 
           animate={{ opacity: 1 }}
           className="absolute inset-0 flex items-center justify-center bg-neutral-900/40 backdrop-blur-[1px] z-10"
         >
-          <span className={cn(
-            "font-black drop-shadow-sm",
-            winnerTextSize,
-            winner === 'X' ? "text-blue-500" : "text-red-500"
-          )}>
-            {winner}
-          </span>
+          {winner && (
+            <PlayerSymbol player={winner} className="w-[70%] h-[70%]" />
+          )}
         </motion.div>
       )}
     </div>

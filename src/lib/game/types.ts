@@ -13,6 +13,14 @@ export type UltimateBoardState = {
   macroBoard: BoardState; // The state of the 9 sub-boards (who won them)
 };
 
+export interface HistoryItem {
+  board: BoardState;
+  ultimateBoard: UltimateBoardState;
+  currentPlayer: Player;
+  winner: Player | 'DRAW' | null;
+  nextBoardIndex: number | null;
+}
+
 export type GameMode = 'classic' | 'ultimate';
 
 export interface GameState {
@@ -24,7 +32,7 @@ export interface GameState {
 
   currentPlayer: Player;
   winner: Player | 'DRAW' | null;
-  history: any[]; // TODO: Type this properly for undo/redo
+  history: HistoryItem[];
 
   // Ultimate specific restrictions
   nextBoardIndex: number | null; // null means can play anywhere (e.g. at start or if sent to full board)

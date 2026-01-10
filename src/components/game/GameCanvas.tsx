@@ -16,14 +16,17 @@ export function GameCanvas({ children }: GameCanvasProps) {
   const { winner, resetGame } = useGameStore();
   const [showOverlay, setShowOverlay] = useState(false);
 
+  // Sync overlay state with winner: Reset immediately when game resets
+  if (!winner && showOverlay) {
+    setShowOverlay(false);
+  }
+
   useEffect(() => {
     if (winner) {
       const timer = setTimeout(() => {
         setShowOverlay(true);
       }, 2000);
       return () => clearTimeout(timer);
-    } else {
-      setShowOverlay(false);
     }
   }, [winner]);
 

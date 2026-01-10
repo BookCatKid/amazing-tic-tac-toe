@@ -14,12 +14,12 @@ export const modes: GameModeInfo[] = [
     description: 'Standard 3×3 grid',
     route: '/game/classic',
   },
-//   {
-//     id: 'ultimate',
-//     name: 'Ultimate',
-//     description: '9 boards, strategic play',
-//     route: '/game/ultimate',
-//   },
+  {
+    id: 'ultimate',
+    name: 'Ultimate',
+    description: '9 boards, strategic play',
+    route: '/game/ultimate',
+  },
 ];
 
 export const modeIds = modes.map((m) => m.id);

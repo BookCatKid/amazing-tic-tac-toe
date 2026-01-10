@@ -1,4 +1,4 @@
-export type Player = 'X' | 'O';
+export type Player = "X" | "O";
 
 export type CellValue = Player | null;
 
@@ -17,7 +17,7 @@ export interface HistoryItem {
   board: BoardState;
   ultimateBoard: UltimateBoardState;
   currentPlayer: Player;
-  winner: Player | 'DRAW' | null;
+  winner: Player | "DRAW" | null;
   nextBoardIndex: number | null;
 }
 
@@ -32,7 +32,7 @@ export interface GameState {
   ultimateBoard: UltimateBoardState;
 
   currentPlayer: Player;
-  winner: Player | 'DRAW' | null;
+  winner: Player | "DRAW" | null;
   history: HistoryItem[];
 
   // Ultimate specific restrictions

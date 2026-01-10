@@ -1,9 +1,9 @@
-import { RotateCcw, ZoomIn, ZoomOut, Home as HomeIcon } from 'lucide-react';
-import { useControls } from 'react-zoom-pan-pinch';
-import { Link, useNavigate } from 'react-router-dom';
-import { useGameStore } from '@/store/gameStore';
-import type { GameMode } from '@/lib/game/types';
-import { modes } from '@/lib/game/modes';
+import { RotateCcw, ZoomIn, ZoomOut, Home as HomeIcon } from "lucide-react";
+import { useControls } from "react-zoom-pan-pinch";
+import { Link, useNavigate } from "react-router-dom";
+import { useGameStore } from "@/store/gameStore";
+import type { GameMode } from "@/lib/game/types";
+import { modes } from "@/lib/game/modes";
 import {
   Select,
   SelectContent,
@@ -37,13 +37,18 @@ export function GameControls() {
           </Button>
         </Link>
 
-        <Select value={mode} onValueChange={(value) => handleModeChange(value as GameMode)}>
+        <Select
+          value={mode}
+          onValueChange={(value) => handleModeChange(value as GameMode)}
+        >
           <SelectTrigger className="w-[140px] px-3 h-10 bg-neutral-800 hover:bg-neutral-700 border-0">
             <SelectValue placeholder="Select mode" />
           </SelectTrigger>
           <SelectContent>
             {modes.map((m) => (
-              <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
+              <SelectItem key={m.id} value={m.id}>
+                {m.name}
+              </SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -61,7 +66,12 @@ export function GameControls() {
 
       {/* Current player */}
       <div className="pointer-events-auto px-4 py-2 bg-neutral-800 rounded text-sm">
-        Turn: <span className={currentPlayer === 'X' ? 'text-blue-400' : 'text-red-400'}>{currentPlayer}</span>
+        Turn:{" "}
+        <span
+          className={currentPlayer === "X" ? "text-blue-400" : "text-red-400"}
+        >
+          {currentPlayer}
+        </span>
       </div>
 
       {/* Zoom controls */}
@@ -83,8 +93,6 @@ export function GameControls() {
           <ZoomOut className="h-6 w-6" />
         </Button>
       </div>
-
-
     </div>
   );
 }

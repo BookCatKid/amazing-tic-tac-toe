@@ -1,8 +1,8 @@
-import { cn } from '@/lib/utils';
-import { Cell } from './Cell';
-import { PlayerSymbol } from './PlayerSymbol';
-import { motion } from 'framer-motion';
-import type { BoardState, Player } from '@/lib/game/types';
+import { cn } from "@/lib/utils";
+import { Cell } from "./Cell";
+import { PlayerSymbol } from "./PlayerSymbol";
+import { motion } from "framer-motion";
+import type { BoardState, Player } from "@/lib/game/types";
 
 interface BoardProps {
   cells: BoardState;
@@ -10,21 +10,29 @@ interface BoardProps {
   disabled?: boolean;
   winner?: Player | null;
   isNext?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export function Board({ cells, onCellClick, disabled, winner, isNext, size='md' }: BoardProps) {
-
+export function Board({
+  cells,
+  onCellClick,
+  disabled,
+  winner,
+  isNext,
+  size = "md",
+}: BoardProps) {
   return (
-    <div className={cn(
-      "relative grid grid-cols-3",
-      disabled && !winner && "opacity-40"
-    )}>
+    <div
+      className={cn(
+        "relative grid grid-cols-3",
+        disabled && !winner && "opacity-40",
+      )}
+    >
       {cells.map((cell, idx) => {
         const borderClasses = cn(
           "border-white/10",
           idx % 3 !== 2 && "border-r-4",
-          idx < 6 && "border-b-4"
+          idx < 6 && "border-b-4",
         );
 
         return (
@@ -48,7 +56,11 @@ export function Board({ cells, onCellClick, disabled, winner, isNext, size='md' 
           className="absolute inset-0 flex items-center justify-center bg-neutral-900/40 backdrop-blur-[1px] z-10"
         >
           {winner && (
-            <PlayerSymbol player={winner} className="w-[70%] h-[70%]" slow={true} />
+            <PlayerSymbol
+              player={winner}
+              className="w-[70%] h-[70%]"
+              slow={true}
+            />
           )}
         </motion.div>
       )}

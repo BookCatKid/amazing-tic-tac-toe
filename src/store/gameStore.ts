@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import type { GameMode, GameState, Player } from '../lib/game/types';
-import { checkWinner, getEmptyBoard, isBoardFull } from '../lib/game/engine';
+import { create } from "zustand";
+import type { GameMode, GameState, Player } from "../lib/game/types";
+import { checkWinner, getEmptyBoard, isBoardFull } from "../lib/game/engine";
 
 interface GameActions {
   setMode: (mode: GameMode) => void;
@@ -10,21 +10,22 @@ interface GameActions {
 
 interface GameStore extends GameState, GameActions {}
 
-
-const INITIAL_STATE: Omit<GameState, 'mode'> = {
+const INITIAL_STATE: Omit<GameState, "mode"> = {
   board: getEmptyBoard(),
   ultimateBoard: {
-    boards: Array(9).fill(null).map(() => getEmptyBoard()),
+    boards: Array(9)
+      .fill(null)
+      .map(() => getEmptyBoard()),
     macroBoard: getEmptyBoard(),
   },
-  currentPlayer: 'X',
+  currentPlayer: "X",
   winner: null,
   history: [],
   nextBoardIndex: null,
 };
 
 export const useGameStore = create<GameStore>((set, get) => ({
-  mode: 'classic',
+  mode: "classic",
   ...INITIAL_STATE,
 
   setMode: (mode) => set({ mode, ...INITIAL_STATE }),
@@ -36,24 +37,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (state.winner) return;
 
     // Classic Mode
-    if (state.mode === 'classic') {
-       // In classic mode, we only use 'boardIndex' as cellIndex if we treat the single board as boardIndex 0?
-       // Or simpler: Classic uses `board` state. let's assume UI passes -1 or 0 for main board.
-       // Let's standardise: for classic, boardIndex is ignored (or 0), cellIndex is 0-8.
+    if (state.mode === "classic") {
+      // In classic mode, we only use 'boardIndex' as cellIndex if we treat the single board as boardIndex 0?
+      // Or simpler: Classic uses `board` state. let's assume UI passes -1 or 0 for main board.
+      // Let's standardise: for classic, boardIndex is ignored (or 0), cellIndex is 0-8.
 
-       if (state.board[cellIndex] !== null) return;
+      if (state.board[cellIndex] !== null) return;
 
-       const newBoard = [...state.board];
-       newBoard[cellIndex] = state.currentPlayer;
+      const newBoard = [...state.board];
+      newBoard[cellIndex] = state.currentPlayer;
 
-       const winner = checkWinner(newBoard) || (isBoardFull(newBoard) ? 'DRAW' : null);
+      const winner =
+        checkWinner(newBoard) || (isBoardFull(newBoard) ? "DRAW" : null);
 
-       set({
-         board: newBoard,
-         currentPlayer: state.currentPlayer === 'X' ? 'O' : 'X',
-         winner,
-       });
-       return;
+      set({
+        board: newBoard,
+        currentPlayer: state.currentPlayer === "X" ? "O" : "X",
+        winner,
+      });
+      return;
     }
 
     // Ultimate Mode
@@ -73,9 +75,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // But we must also check if the specific sub-board at boardIndex is actually playable?
     // If nextBoardIndex is null, player can choose ANY board that is not full/won.
-    if (state.ultimateBoard.macroBoard[boardIndex] !== null || isBoardFull(currentSubBoard)) {
-        // Can't play in a won/full board
-        return;
+    if (
+      state.ultimateBoard.macroBoard[boardIndex] !== null ||
+      isBoardFull(currentSubBoard)
+    ) {
+      // Can't play in a won/full board
+      return;
     }
 
     const newSubBoard = [...currentSubBoard];
@@ -86,7 +91,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const subWinner = checkWinner(newSubBoard);
     const newMacroBoard = [...state.ultimateBoard.macroBoard];
-    let gameWinner: Player | 'DRAW' | null = null;
+    let gameWinner: Player | "DRAW" | null = null;
 
     if (subWinner) {
       newMacroBoard[boardIndex] = subWinner;
@@ -95,11 +100,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (mainWinner) {
         gameWinner = mainWinner;
       } else if (isBoardFull(newMacroBoard)) {
-          gameWinner = 'DRAW';
+        gameWinner = "DRAW";
       }
     } else if (isBoardFull(newSubBoard)) {
-        // Tie in sub-board? usually treat as null or special.
-        // Simple variant: just can't play there anymore.
+      // Tie in sub-board? usually treat as null or special.
+      // Simple variant: just can't play there anymore.
     }
 
     // Determine next board
@@ -107,7 +112,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     let nextIdx: number | null = cellIndex;
 
     // If target board is full or won, valid to play anywhere
-    if (newMacroBoard[nextIdx] !== null || isBoardFull(newUltimateBoards[nextIdx])) {
+    if (
+      newMacroBoard[nextIdx] !== null ||
+      isBoardFull(newUltimateBoards[nextIdx])
+    ) {
       nextIdx = null;
     }
 
@@ -116,7 +124,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boards: newUltimateBoards,
         macroBoard: newMacroBoard,
       },
-      currentPlayer: state.currentPlayer === 'X' ? 'O' : 'X',
+      currentPlayer: state.currentPlayer === "X" ? "O" : "X",
       nextBoardIndex: nextIdx,
       winner: gameWinner,
     });

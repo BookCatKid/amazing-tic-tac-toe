@@ -1,4 +1,4 @@
-import type { GameMode } from './types';
+import type { GameMode } from "./types";
 
 export interface GameModeInfo {
   id: GameMode;
@@ -9,16 +9,16 @@ export interface GameModeInfo {
 
 export const modes: GameModeInfo[] = [
   {
-    id: 'classic',
-    name: 'Classic',
-    description: 'Standard 3×3 grid',
-    route: '/game/classic',
+    id: "classic",
+    name: "Classic",
+    description: "Standard 3×3 grid",
+    route: "/game/classic",
   },
   {
-    id: 'ultimate',
-    name: 'Ultimate',
-    description: '9 boards, strategic play',
-    route: '/game/ultimate',
+    id: "ultimate",
+    name: "Ultimate",
+    description: "9 boards, strategic play",
+    route: "/game/ultimate",
   },
 ];
 

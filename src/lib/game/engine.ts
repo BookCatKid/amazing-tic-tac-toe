@@ -1,4 +1,4 @@
-import type { BoardState, Player } from './types';
+import type { BoardState, Player } from "./types";
 
 export const WIN_PATTERNS = [
   [0, 1, 2],

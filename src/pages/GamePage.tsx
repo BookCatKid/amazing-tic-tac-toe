@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { GameCanvas } from '@/components/game/GameCanvas';
-import renderMode from '@/lib/game/modeRenderers';
-import { useGameStore } from '@/store/gameStore';
-import type { GameMode } from '@/lib/game/types';
-import { isValidMode } from '@/lib/game/modes';
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { GameCanvas } from "@/components/game/GameCanvas";
+import renderMode from "@/lib/game/modeRenderers";
+import { useGameStore } from "@/store/gameStore";
+import type { GameMode } from "@/lib/game/types";
+import { isValidMode } from "@/lib/game/modes";
 
 export function GamePage() {
   const { mode: urlMode } = useParams<{ mode: string }>();
@@ -18,7 +18,7 @@ export function GamePage() {
         setMode(urlMode as GameMode);
       }
     } else {
-      navigate('/');
+      navigate("/");
     }
   }, [urlMode, mode, setMode, navigate]);
 
@@ -31,7 +31,7 @@ export function GamePage() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{
             duration: 0.5,
-            ease: [0.16, 1, 0.3, 1] // Custom spring-like ease
+            ease: [0.16, 1, 0.3, 1], // Custom spring-like ease
           }}
         >
           {renderMode(mode, { board, makeMove, winner })}

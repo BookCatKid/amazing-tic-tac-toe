@@ -4,15 +4,13 @@ A simple, fast Tic-Tac-Toe app with support for many game modes. It includes the
 
 ## Features
 
-* **Multiple game modes**
+- **Multiple game modes**
+  - Supports classic Tic-Tac-Toe and more complex variants.
+  - Built to easily add new modes over time.
 
-  * Supports classic Tic-Tac-Toe and more complex variants.
-  * Built to easily add new modes over time.
-
-* **Clean UI**
-
-  * Animated X and O symbols.
-  * Zoom and pan support for larger boards.
+- **Clean UI**
+  - Animated X and O symbols.
+  - Zoom and pan support for larger boards.
 
 ## License
 

@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import { useGameStore } from '@/store/gameStore';
-import { Board } from './Board';
+import { cn } from "@/lib/utils";
+import { useGameStore } from "@/store/gameStore";
+import { Board } from "./Board";
 
 export function UltimateBoard() {
   const { ultimateBoard, nextBoardIndex, makeMove, winner } = useGameStore();
@@ -12,7 +12,9 @@ export function UltimateBoard() {
   return (
     <div className="relative grid grid-cols-3 bg-transparent overflow-hidden">
       {ultimateBoard.boards.map((board, boardIdx) => {
-        const isPlayable = winner === null && (nextBoardIndex === null || nextBoardIndex === boardIdx);
+        const isPlayable =
+          winner === null &&
+          (nextBoardIndex === null || nextBoardIndex === boardIdx);
         const boardWinner = ultimateBoard.macroBoard[boardIdx];
 
         // Macro border classes - clean thick lines
@@ -20,7 +22,7 @@ export function UltimateBoard() {
           "border-white/30",
           boardIdx % 3 !== 2 && "border-r-8",
           boardIdx < 6 && "border-b-8",
-          "p-2" // Reduced padding to expand sub-boards
+          "p-2", // Reduced padding to expand sub-boards
         );
 
         return (
@@ -36,7 +38,6 @@ export function UltimateBoard() {
           </div>
         );
       })}
-
     </div>
   );
 }

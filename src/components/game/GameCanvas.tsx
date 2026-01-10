@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useGameStore } from '@/store/gameStore';
-import { PlayerSymbol } from './PlayerSymbol';
-import type { Player } from '@/lib/game/types';
-import { GameControls } from './GameControls';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { motion, AnimatePresence } from "framer-motion";
+import { useGameStore } from "@/store/gameStore";
+import { PlayerSymbol } from "./PlayerSymbol";
+import type { Player } from "@/lib/game/types";
+import { GameControls } from "./GameControls";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface GameCanvasProps {
   children: React.ReactNode;
@@ -66,20 +66,22 @@ export function GameCanvas({ children }: GameCanvasProps) {
               className="flex flex-col items-center gap-6"
             >
               <h2 className="text-4xl font-black text-white drop-shadow-lg">
-                {winner === 'DRAW' ? 'Draw' : 'Victory!'}
+                {winner === "DRAW" ? "Draw" : "Victory!"}
               </h2>
 
-              {winner !== 'DRAW' && (
+              {winner !== "DRAW" && (
                 <div className="relative">
-                  <div className={cn(
-                    "absolute inset-0 blur-3xl opacity-50",
-                    winner === 'X' ? "bg-blue-500" : "bg-red-500"
-                  )} />
+                  <div
+                    className={cn(
+                      "absolute inset-0 blur-3xl opacity-50",
+                      winner === "X" ? "bg-blue-500" : "bg-red-500",
+                    )}
+                  />
                   <PlayerSymbol
                     player={winner as Player}
                     className={cn(
                       "w-32 h-32 md:w-48 md:h-48 relative z-10 drop-shadow-2xl",
-                      winner === 'X' ? "text-blue-500" : "text-red-500"
+                      winner === "X" ? "text-blue-500" : "text-red-500",
                     )}
                   />
                 </div>
@@ -91,7 +93,9 @@ export function GameCanvas({ children }: GameCanvasProps) {
                   onClick={resetGame}
                   className={cn(
                     "rounded-full font-bold shadow-lg",
-                    winner === 'X' || winner === 'DRAW' ? "bg-blue-600 hover:bg-blue-500" : "bg-red-600 hover:bg-red-500 text-white"
+                    winner === "X" || winner === "DRAW"
+                      ? "bg-blue-600 hover:bg-blue-500"
+                      : "bg-red-600 hover:bg-red-500 text-white",
                   )}
                 >
                   New Game

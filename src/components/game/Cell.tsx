@@ -1,21 +1,21 @@
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { PlayerSymbol } from './PlayerSymbol';
-import type { Player } from '@/lib/game/types';
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { PlayerSymbol } from "./PlayerSymbol";
+import type { Player } from "@/lib/game/types";
 
 interface CellProps {
   value: Player | null;
   onClick: () => void;
   disabled?: boolean;
   highlight?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export function Cell({ value, onClick, disabled, size = 'md' }: CellProps) {
+export function Cell({ value, onClick, disabled, size = "md" }: CellProps) {
   const sizeClasses = {
     sm: "w-8 h-8",
     md: "w-14 h-14",
-    lg: "w-24 h-24"
+    lg: "w-24 h-24",
   };
 
   return (
@@ -28,13 +28,11 @@ export function Cell({ value, onClick, disabled, size = 'md' }: CellProps) {
         "bg-transparent hover:bg-white/[0.03]",
         sizeClasses[size],
         disabled && "opacity-50 grayscale cursor-default hover:bg-transparent",
-        value === 'X' && "text-blue-500",
-        value === 'O' && "text-red-500"
+        value === "X" && "text-blue-500",
+        value === "O" && "text-red-500",
       )}
     >
-      {value && (
-        <PlayerSymbol player={value} className="w-[65%] h-[65%]" />
-      )}
+      {value && <PlayerSymbol player={value} className="w-[65%] h-[65%]" />}
     </motion.button>
   );
 }

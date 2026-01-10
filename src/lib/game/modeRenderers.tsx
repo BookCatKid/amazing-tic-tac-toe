@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Board } from '@/components/game/Board';
 import { UltimateBoard } from '@/components/game/UltimateBoard';
 import type { GameMode } from './types';

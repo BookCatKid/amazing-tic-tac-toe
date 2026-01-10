@@ -12,6 +12,7 @@ type RenderCtx = {
 export function renderMode(mode: GameMode, ctx: RenderCtx) {
   switch (mode) {
     case "classic":
+    case "misere":
       return (
         <Board
           cells={ctx.board}

@@ -36,19 +36,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     if (state.winner) return;
 
-    // Classic Mode
-    if (state.mode === "classic") {
-      // In classic mode, we only use 'boardIndex' as cellIndex if we treat the single board as boardIndex 0?
-      // Or simpler: Classic uses `board` state. let's assume UI passes -1 or 0 for main board.
-      // Let's standardise: for classic, boardIndex is ignored (or 0), cellIndex is 0-8.
-
+    // Classic and Misère (single-board) Modes
+    if (state.mode === "classic" || state.mode === "misere") {
       if (state.board[cellIndex] !== null) return;
 
       const newBoard = [...state.board];
       newBoard[cellIndex] = state.currentPlayer;
 
-      const winner =
-        checkWinner(newBoard) || (isBoardFull(newBoard) ? "DRAW" : null);
+      const lineWinner = checkWinner(newBoard);
+      const isMisere = state.mode === "misere";
+
+      let winner: Player | "DRAW" | null = null;
+
+      if (lineWinner) {
+        // Classic: line-maker wins. Misère: line-maker loses (opponent wins).
+        winner = isMisere
+          ? state.currentPlayer === "X"
+            ? "O"
+            : "X"
+          : lineWinner;
+      } else if (isBoardFull(newBoard)) {
+        winner = "DRAW";
+      }
 
       set({
         board: newBoard,

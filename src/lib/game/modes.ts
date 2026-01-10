@@ -4,7 +4,7 @@ export interface GameModeInfo {
   id: GameMode;
   name: string;
   description?: string;
-  route?: string; // optional override
+  route: string;
 }
 
 export const modes: GameModeInfo[] = [
@@ -13,6 +13,12 @@ export const modes: GameModeInfo[] = [
     name: "Classic",
     description: "Standard 3×3 grid",
     route: "/game/classic",
+  },
+  {
+    id: "misere",
+    name: "Misère",
+    description: "Winner loses 😱",
+    route: "/game/misere",
   },
   {
     id: "ultimate",

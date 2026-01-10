@@ -84,10 +84,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const newUltimateBoards = [...state.ultimateBoard.boards];
     newUltimateBoards[boardIndex] = newSubBoard;
 
-    // Check if sub-board is already won
     const subWinner = checkWinner(newSubBoard);
     const newMacroBoard = [...state.ultimateBoard.macroBoard];
-    let gameWinner: Player | 'DRAW' | null = state.winner;
+    let gameWinner: Player | 'DRAW' | null = null;
 
     if (subWinner) {
       newMacroBoard[boardIndex] = subWinner;

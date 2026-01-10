@@ -6,6 +6,7 @@ import { PlayerSymbol } from './PlayerSymbol';
 import type { Player } from '@/lib/game/types';
 import { GameControls } from './GameControls';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface GameCanvasProps {
   children: React.ReactNode;
@@ -82,21 +83,24 @@ export function GameCanvas({ children }: GameCanvasProps) {
               )}
 
               <div className="flex gap-4 mt-4 relative z-20">
-                <button
+                <Button
+                  size="lg"
                   onClick={resetGame}
                   className={cn(
-                    "px-6 py-2 rounded-full font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-lg",
-                    winner === 'X' || winner === 'DRAW' ? "bg-blue-600 hover:bg-blue-500" : "bg-red-600 hover:bg-red-500"
+                    "rounded-full font-bold shadow-lg",
+                    winner === 'X' || winner === 'DRAW' ? "bg-blue-600 hover:bg-blue-500" : "bg-red-600 hover:bg-red-500 text-white"
                   )}
                 >
                   New Game
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
                   onClick={() => setShowOverlay(false)}
-                  className="px-6 py-2 rounded-full font-bold text-white/80 border-2 border-white/20 hover:bg-white/10 hover:text-white transition-colors"
+                  className="rounded-full font-bold text-white/80 border-2 border-white/20 hover:bg-white/10 hover:text-white transition-colors"
                 >
                   Review Board
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

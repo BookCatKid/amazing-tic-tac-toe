@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export function GameControls() {
   const { mode, resetGame, currentPlayer } = useGameStore();
@@ -25,13 +26,18 @@ export function GameControls() {
       {/* Left controls */}
       <div className="flex gap-2 pointer-events-auto">
         <Link to="/">
-          <button className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded" title="Back to Menu">
-            <HomeIcon className="h-5 w-5" />
-          </button>
+          <Button
+            variant="secondary"
+            className="bg-neutral-800 hover:bg-neutral-700 h-10 px-4 border-0"
+            title="Back to Menu"
+          >
+            <HomeIcon className="h-5 w-5 mr-2" />
+            Home
+          </Button>
         </Link>
 
-        <Select value={mode} onValueChange={(value: string) => handleModeChange(value as GameMode)}>
-          <SelectTrigger className="bg-neutral-800 hover:bg-neutral-700 px-3 py-2 h-auto border-0">
+        <Select value={mode} onValueChange={(value) => handleModeChange(value as GameMode)}>
+          <SelectTrigger className="w-[140px] px-3 h-10 bg-neutral-800 hover:bg-neutral-700 border-0">
             <SelectValue placeholder="Select mode" />
           </SelectTrigger>
           <SelectContent>
@@ -40,13 +46,15 @@ export function GameControls() {
           </SelectContent>
         </Select>
 
-        <button
-          className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded"
+        <Button
+          variant="secondary"
+          className="bg-neutral-800 hover:bg-neutral-700 h-10 px-4 border-0"
           onClick={resetGame}
           title="Reset Game"
         >
-          <RotateCcw className="h-5 w-5" />
-        </button>
+          <RotateCcw className="h-5 w-5 mr-2" />
+          Reset
+        </Button>
       </div>
 
       {/* Current player */}
@@ -56,12 +64,22 @@ export function GameControls() {
 
       {/* Zoom controls */}
       <div className="flex flex-col gap-1 pointer-events-auto">
-        <button className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded" onClick={() => zoomIn()}>
-          <ZoomIn className="h-5 w-5" />
-        </button>
-        <button className="p-2 bg-neutral-800 hover:bg-neutral-700 rounded" onClick={() => zoomOut()}>
-          <ZoomOut className="h-5 w-5" />
-        </button>
+        <Button
+          variant="secondary"
+          className="bg-neutral-800 hover:bg-neutral-700 h-11 w-11 p-0 border-0"
+          onClick={() => zoomIn()}
+          title="Zoom In"
+        >
+          <ZoomIn className="h-6 w-6" />
+        </Button>
+        <Button
+          variant="secondary"
+          className="bg-neutral-800 hover:bg-neutral-700 h-11 w-11 p-0 border-0"
+          onClick={() => zoomOut()}
+          title="Zoom Out"
+        >
+          <ZoomOut className="h-6 w-6" />
+        </Button>
       </div>
 
 

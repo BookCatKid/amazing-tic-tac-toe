@@ -38,7 +38,7 @@ export function GamePage() {
             <Board
               cells={board}
               onCellClick={(idx) => makeMove(0, idx)}
-              winner={winner === 'DRAW' ? null : winner as any}
+              winner={winner === 'DRAW' ? null : winner}
               disabled={!!winner}
               size="lg"
             />

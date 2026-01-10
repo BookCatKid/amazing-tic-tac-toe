@@ -3,6 +3,7 @@ import { useControls } from 'react-zoom-pan-pinch';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import type { GameMode } from '@/lib/game/types';
+import { modes } from '@/lib/game/modes';
 import {
   Select,
   SelectContent,
@@ -41,8 +42,9 @@ export function GameControls() {
             <SelectValue placeholder="Select mode" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="classic">Classic</SelectItem>
-            <SelectItem value="ultimate">Ultimate</SelectItem>
+            {modes.map((m) => (
+              <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
 

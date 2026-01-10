@@ -65,8 +65,8 @@ export function GameCanvas({ children }: GameCanvasProps) {
               transition={{ type: "spring", bounce: 0.5 }}
               className="flex flex-col items-center gap-6"
             >
-              <h2 className="text-4xl font-black tracking-[0.2em] text-white drop-shadow-lg">
-                {winner === 'DRAW' ? 'DRAW' : 'VICTORY'}
+              <h2 className="text-4xl font-black text-white drop-shadow-lg">
+                {winner === 'DRAW' ? 'Draw' : 'Victory!'}
               </h2>
 
               {winner !== 'DRAW' && (

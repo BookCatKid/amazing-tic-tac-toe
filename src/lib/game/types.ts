@@ -21,7 +21,8 @@ export interface HistoryItem {
   nextBoardIndex: number | null;
 }
 
-export type GameMode = 'classic' | 'ultimate';
+// GameMode is now a string ID. Valid IDs are provided by the modes registry
+export type GameMode = string;
 
 export interface GameState {
   mode: GameMode;

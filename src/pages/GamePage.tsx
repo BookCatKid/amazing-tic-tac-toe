@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GameCanvas } from '@/components/game/GameCanvas';
-import { Board } from '@/components/game/Board';
-import { UltimateBoard } from '@/components/game/UltimateBoard';
+import renderMode from '@/lib/game/modeRenderers';
 import { useGameStore } from '@/store/gameStore';
 import type { GameMode } from '@/lib/game/types';
+import { isValidMode } from '@/lib/game/modes';
 
 export function GamePage() {
   const { mode: urlMode } = useParams<{ mode: string }>();
@@ -13,7 +13,7 @@ export function GamePage() {
   const { mode, setMode, board, makeMove, winner } = useGameStore();
 
   useEffect(() => {
-    if (urlMode === 'classic' || urlMode === 'ultimate') {
+    if (isValidMode(urlMode)) {
       if (mode !== urlMode) {
         setMode(urlMode as GameMode);
       }
@@ -34,17 +34,7 @@ export function GamePage() {
             ease: [0.16, 1, 0.3, 1] // Custom spring-like ease
           }}
         >
-          {mode === 'classic' ? (
-            <Board
-              cells={board}
-              onCellClick={(idx) => makeMove(0, idx)}
-              winner={winner === 'DRAW' ? null : winner}
-              disabled={!!winner}
-              size="lg"
-            />
-          ) : (
-            <UltimateBoard />
-          )}
+          {renderMode(mode, { board, makeMove, winner })}
         </motion.div>
       </GameCanvas>
     </div>

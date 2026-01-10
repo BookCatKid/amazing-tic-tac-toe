@@ -8,7 +8,7 @@ export function Logo({ className }: LogoProps) {
   return (
     <div className={cn("relative", className)}>
       <img
-        src="/logo.svg"
+        src="logo.svg"
         alt="Amazing Tic Tac Toe"
         className="w-full h-auto drop-shadow-2xl"
       />

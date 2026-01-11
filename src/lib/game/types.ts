@@ -14,11 +14,11 @@ export type UltimateBoardState = {
 };
 
 export interface HistoryItem {
-  board: BoardState;
-  ultimateBoard: UltimateBoardState;
   currentPlayer: Player;
   winner: Player | "DRAW" | null;
-  nextBoardIndex: number | null;
+  // Dynamic state properties for history tracking
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }
 
 // GameMode is now a string ID. Valid IDs are provided by the modes registry
@@ -26,15 +26,11 @@ export type GameMode = string;
 
 export interface GameState {
   mode: GameMode;
-  // For classic
-  board: BoardState;
-  // For ultimate
-  ultimateBoard: UltimateBoardState;
-
   currentPlayer: Player;
   winner: Player | "DRAW" | null;
   history: HistoryItem[];
 
-  // Ultimate specific restrictions
-  nextBoardIndex: number | null; // null means can play anywhere (e.g. at start or if sent to full board)
+  // Dynamic state properties for different game modes
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }

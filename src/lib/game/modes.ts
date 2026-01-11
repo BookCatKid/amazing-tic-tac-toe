@@ -1,3 +1,4 @@
+import { getAllGameModes, getGameModeById, isValidGameMode } from "../../gamemodes";
 import type { GameMode } from "./types";
 
 export interface GameModeInfo {
@@ -7,36 +8,18 @@ export interface GameModeInfo {
   route: string;
 }
 
-export const modes: GameModeInfo[] = [
-  {
-    id: "classic",
-    name: "Classic",
-    description: "Standard 3×3 grid",
-    route: "/game/classic",
-  },
-  {
-    id: "misere",
-    name: "Misère",
-    description: "Winner loses 😱",
-    route: "/game/misere",
-  },
-  {
-    id: "ultimate",
-    name: "Ultimate",
-    description: "9 boards, strategic play",
-    route: "/game/ultimate",
-  },
-];
+export const modes: GameModeInfo[] = getAllGameModes();
 
 export const modeIds = modes.map((m) => m.id);
 
 export function isValidMode(id?: string | null): id is GameMode {
   if (!id) return false;
-  return modeIds.includes(id);
+  return isValidGameMode(id);
 }
 
 export function getModeById(id?: string | null) {
-  return modes.find((m) => m.id === id) ?? null;
+  const mode = getGameModeById(id as GameMode);
+  return mode ?? null;
 }
 
 export default modes;

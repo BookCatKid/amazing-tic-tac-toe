@@ -1,141 +1,101 @@
 import { create } from "zustand";
-import type { GameMode, GameState, Player } from "../lib/game/types";
-import { checkWinner, getEmptyBoard, isBoardFull } from "../lib/game/engine";
+import type { GameMode, GameState } from "../lib/game/types";
+import { getGameModeById } from "../gamemodes";
+import type { GameModeHandlers } from "../lib/game/handlerTypes";
 
 interface GameActions {
-  setMode: (mode: GameMode) => void;
-  resetGame: () => void;
-  makeMove: (boardIndex: number, cellIndex: number) => void;
+  setMode: (mode: GameMode) => Promise<void>;
+  resetGame: () => Promise<void>;
+  makeMove: (boardIndex: number, cellIndex: number) => Promise<void>;
 }
 
 interface GameStore extends GameState, GameActions {}
 
-const INITIAL_STATE: Omit<GameState, "mode"> = {
-  board: getEmptyBoard(),
-  ultimateBoard: {
-    boards: Array(9)
-      .fill(null)
-      .map(() => getEmptyBoard()),
-    macroBoard: getEmptyBoard(),
-  },
+export const useGameStore = create<GameStore>((set, get) => ({
+  mode: "classic",
   currentPlayer: "X",
   winner: null,
   history: [],
-  nextBoardIndex: null,
-};
 
-export const useGameStore = create<GameStore>((set, get) => ({
-  mode: "classic",
-  ...INITIAL_STATE,
+  setMode: async (mode) => {
+    const gameMode = getGameModeById(mode);
+    if (!gameMode) return;
 
-  setMode: (mode) => set({ mode, ...INITIAL_STATE }),
+    try {
+      const handlersModule = (await gameMode.loadHandlers()) as { Handlers: new () => GameModeHandlers };
+      const handlers = new handlersModule.Handlers();
+      const initialState = handlers.getInitialState();
+      set({
+        mode,
+        currentPlayer: "X",
+        winner: null,
+        history: [],
+        ...initialState
+      });
+    } catch (error) {
+      console.error(`Failed to load initial state for mode ${mode}:`, error);
+      set({
+        mode,
+        currentPlayer: "X",
+        winner: null,
+        history: [],
+      });
+    }
+  },
 
-  resetGame: () => set((state) => ({ ...INITIAL_STATE, mode: state.mode })),
+  resetGame: async () => {
+    const { mode } = get();
+    const gameMode = getGameModeById(mode);
+    if (!gameMode) return;
 
-  makeMove: (boardIndex: number, cellIndex: number) => {
+    try {
+      const handlersModule = (await gameMode.loadHandlers()) as { Handlers: new () => GameModeHandlers };
+      const handlers = new handlersModule.Handlers();
+      const initialState = handlers.getInitialState();
+      set({
+        currentPlayer: "X",
+        winner: null,
+        history: [],
+        ...initialState
+      });
+    } catch (error) {
+      console.error(`Failed to reset game for mode ${mode}:`, error);
+      set({
+        currentPlayer: "X",
+        winner: null,
+        history: [],
+      });
+    }
+  },
+
+  makeMove: async (boardIndex: number, cellIndex: number) => {
     const state = get();
     if (state.winner) return;
 
-    // Classic and Misère (single-board) Modes
-    if (state.mode === "classic" || state.mode === "misere") {
-      if (state.board[cellIndex] !== null) return;
+    const gameMode = getGameModeById(state.mode);
+    if (!gameMode) return;
 
-      const newBoard = [...state.board];
-      newBoard[cellIndex] = state.currentPlayer;
+    try {
+      const handlersModule = (await gameMode.loadHandlers()) as { Handlers: new () => GameModeHandlers };
+      const HandlersClass = handlersModule.Handlers;
 
-      const lineWinner = checkWinner(newBoard);
-      const isMisere = state.mode === "misere";
-
-      let winner: Player | "DRAW" | null = null;
-
-      if (lineWinner) {
-        // Classic: line-maker wins. Misère: line-maker loses (opponent wins).
-        winner = isMisere
-          ? state.currentPlayer === "X"
-            ? "O"
-            : "X"
-          : lineWinner;
-      } else if (isBoardFull(newBoard)) {
-        winner = "DRAW";
+      if (!HandlersClass) {
+        console.error(`No Handlers export found for mode ${state.mode}`);
+        return;
       }
 
-      set({
-        board: newBoard,
-        currentPlayer: state.currentPlayer === "X" ? "O" : "X",
-        winner,
+      const handlers = new HandlersClass();
+      const result = handlers.makeMove({
+        state,
+        boardIndex,
+        cellIndex,
       });
-      return;
-    }
 
-    // Ultimate Mode
-    // Check if move is valid in terms of nextBoardIndex
-    if (state.nextBoardIndex !== null && state.nextBoardIndex !== boardIndex) {
-      return; // Invalid board target
-    }
-
-    const currentSubBoard = state.ultimateBoard.boards[boardIndex];
-    // Check if cell is empty
-    if (currentSubBoard[cellIndex] !== null) return;
-    // Check if sub-board is already won (if we allow playing in won boards? usually no, but sometimes yes.
-    // Standard rule: if sent to a full/won board, can play anywhere.
-    // If sent to a board that is NOT full/won, MUST play there.
-    // However, if the target board is already full/won, current logic sets nextBoardIndex to null.
-    // So if we are here, nextBoardIndex corresponds to a playable board, OR is null.
-
-    // But we must also check if the specific sub-board at boardIndex is actually playable?
-    // If nextBoardIndex is null, player can choose ANY board that is not full/won.
-    if (
-      state.ultimateBoard.macroBoard[boardIndex] !== null ||
-      isBoardFull(currentSubBoard)
-    ) {
-      // Can't play in a won/full board
-      return;
-    }
-
-    const newSubBoard = [...currentSubBoard];
-    newSubBoard[cellIndex] = state.currentPlayer;
-
-    const newUltimateBoards = [...state.ultimateBoard.boards];
-    newUltimateBoards[boardIndex] = newSubBoard;
-
-    const subWinner = checkWinner(newSubBoard);
-    const newMacroBoard = [...state.ultimateBoard.macroBoard];
-    let gameWinner: Player | "DRAW" | null = null;
-
-    if (subWinner) {
-      newMacroBoard[boardIndex] = subWinner;
-      // Check for game win
-      const mainWinner = checkWinner(newMacroBoard);
-      if (mainWinner) {
-        gameWinner = mainWinner;
-      } else if (isBoardFull(newMacroBoard)) {
-        gameWinner = "DRAW";
+      if (result && result.newState) {
+        set(result.newState);
       }
-    } else if (isBoardFull(newSubBoard)) {
-      // Tie in sub-board? usually treat as null or special.
-      // Simple variant: just can't play there anymore.
+    } catch (error) {
+      console.error(`Failed to handle move for mode ${state.mode}:`, error);
     }
-
-    // Determine next board
-    // The next move must be in the board corresponding to cellIndex
-    let nextIdx: number | null = cellIndex;
-
-    // If target board is full or won, valid to play anywhere
-    if (
-      newMacroBoard[nextIdx] !== null ||
-      isBoardFull(newUltimateBoards[nextIdx])
-    ) {
-      nextIdx = null;
-    }
-
-    set({
-      ultimateBoard: {
-        boards: newUltimateBoards,
-        macroBoard: newMacroBoard,
-      },
-      currentPlayer: state.currentPlayer === "X" ? "O" : "X",
-      nextBoardIndex: nextIdx,
-      winner: gameWinner,
-    });
   },
 }));

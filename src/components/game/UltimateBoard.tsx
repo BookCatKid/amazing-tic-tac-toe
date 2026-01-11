@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/store/gameStore";
 import { Board } from "./Board";
+import type { BoardState } from "@/lib/game/types";
 
 export function UltimateBoard() {
   const { ultimateBoard, nextBoardIndex, makeMove, winner } = useGameStore();
@@ -9,9 +10,11 @@ export function UltimateBoard() {
     makeMove(boardIdx, cellIdx);
   };
 
+  if (!ultimateBoard) return null;
+
   return (
     <div className="relative grid grid-cols-3 bg-transparent overflow-hidden">
-      {ultimateBoard.boards.map((board, boardIdx) => {
+      {ultimateBoard.boards.map((board: BoardState, boardIdx: number) => {
         const isPlayable =
           winner === null &&
           (nextBoardIndex === null || nextBoardIndex === boardIdx);

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GameCanvas } from "@/components/game/GameCanvas";
-import renderMode from "@/lib/game/modeRenderers";
+import GameModeRenderer from "@/lib/game/modeRenderers";
 import { useGameStore } from "@/store/gameStore";
 import type { GameMode } from "@/lib/game/types";
 import { isValidMode } from "@/lib/game/modes";
@@ -34,7 +34,7 @@ export function GamePage() {
             ease: [0.16, 1, 0.3, 1], // Custom spring-like ease
           }}
         >
-          {renderMode(mode, { board, makeMove, winner })}
+          <GameModeRenderer mode={mode} ctx={{ board, makeMove, winner }} />
         </motion.div>
       </GameCanvas>
     </div>

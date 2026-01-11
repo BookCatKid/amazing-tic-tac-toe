@@ -3,11 +3,7 @@ import React, { useState, useEffect } from "react";
 import { getGameModeById } from "../../gamemodes";
 import type { GameMode } from "./types";
 
-type RenderCtx = {
-  board: any;
-  makeMove: (boardIndex: number, cellIndex: number) => void;
-  winner: any;
-};
+type RenderCtx = any;
 
 export function GameModeRenderer({ mode, ctx }: { mode: GameMode; ctx: RenderCtx }) {
   const [Renderer, setRenderer] = useState<React.ComponentType<any> | null>(null);

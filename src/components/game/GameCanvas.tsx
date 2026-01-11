@@ -78,7 +78,7 @@ export function GameCanvas({ children }: GameCanvasProps) {
                     )}
                   />
                   <PlayerSymbol
-                    player={winner as Player}
+                    symbol={winner as Player}
                     className={cn(
                       "w-32 h-32 md:w-48 md:h-48 relative z-10 drop-shadow-2xl",
                       winner === "X" ? "text-blue-500" : "text-red-500",

@@ -6,7 +6,9 @@ import type { GameModeHandlers } from "../lib/game/handlerTypes";
 interface GameActions {
   setMode: (mode: GameMode) => Promise<void>;
   resetGame: () => Promise<void>;
-  makeMove: (boardIndex: number, cellIndex: number) => Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  makeMove: (boardIndex: number, cellIndex: number, extraData?: any) => Promise<void>;
+  updateState: (newState: Partial<GameState>) => void;
 }
 
 interface GameStore extends GameState, GameActions {}
@@ -16,6 +18,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   currentPlayer: "X",
   winner: null,
   history: [],
+  board: Array(9).fill(null),
+
+  updateState: (newState) => set(newState),
 
   setMode: async (mode) => {
     const gameMode = getGameModeById(mode);
@@ -68,7 +73,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
 
-  makeMove: async (boardIndex: number, cellIndex: number) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  makeMove: async (boardIndex: number, cellIndex: number, extraData?: any) => {
     const state = get();
     if (state.winner) return;
 
@@ -89,6 +95,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         state,
         boardIndex,
         cellIndex,
+        extraData,
       });
 
       if (result && result.newState) {

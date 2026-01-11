@@ -21,6 +21,16 @@ export function Board({
   isNext,
   size = "md",
 }: BoardProps) {
+  if (!cells) {
+    return (
+      <div className="flex items-center justify-center aspect-square w-full">
+        <div className="animate-pulse text-muted-foreground/20 font-black text-xl italic">
+          Initializing...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(
@@ -57,7 +67,7 @@ export function Board({
         >
           {winner && (
             <PlayerSymbol
-              player={winner}
+              symbol={winner}
               className="w-[70%] h-[70%]"
               slow={true}
             />

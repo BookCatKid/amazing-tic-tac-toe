@@ -1,6 +1,14 @@
 export type Player = "X" | "O";
 
-export type CellValue = Player | null;
+// Symbols available in different game modes
+export type ClassicSymbol = "X" | "O";
+export type SOSSymbol = "S" | "O";
+
+// All possible symbols that can be placed on a board
+export type GameSymbol = ClassicSymbol | SOSSymbol;
+
+// A cell can contain a symbol or be empty
+export type CellValue = GameSymbol | null;
 
 // Represents a standard 3x3 board state
 // 0 1 2

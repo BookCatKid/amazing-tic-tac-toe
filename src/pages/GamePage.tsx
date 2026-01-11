@@ -10,7 +10,8 @@ import { isValidMode } from "@/lib/game/modes";
 export function GamePage() {
   const { mode: urlMode } = useParams<{ mode: string }>();
   const navigate = useNavigate();
-  const { mode, setMode, board, makeMove, winner } = useGameStore();
+  const store = useGameStore();
+  const { mode, setMode } = store;
 
   useEffect(() => {
     if (isValidMode(urlMode)) {
@@ -34,7 +35,7 @@ export function GamePage() {
             ease: [0.16, 1, 0.3, 1], // Custom spring-like ease
           }}
         >
-          <GameModeRenderer mode={mode} ctx={{ board, makeMove, winner }} />
+          <GameModeRenderer mode={mode} ctx={store} />
         </motion.div>
       </GameCanvas>
     </div>

@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { PlayerSymbol } from "./PlayerSymbol";
-import type { Player } from "@/lib/game/types";
+import type { CellValue } from "@/lib/game/types";
 
 interface CellProps {
-  value: Player | null;
+  value: CellValue;
   onClick: () => void;
   disabled?: boolean;
   highlight?: boolean;
@@ -32,7 +32,7 @@ export function Cell({ value, onClick, disabled, size = "md" }: CellProps) {
         value === "O" && "text-red-500",
       )}
     >
-      {value && <PlayerSymbol player={value} className="w-[65%] h-[65%]" />}
+      {value && <PlayerSymbol symbol={value} className="w-[65%] h-[65%]" />}
     </motion.button>
   );
 }

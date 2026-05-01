@@ -1,6 +1,6 @@
 # Amazing Tic-Tac-Toe
 
-I've had this idea for a while although its very badle executed here. i wanted to have an extremely diverse selection of tic tac toe variants and combinations and especially very large meta games. Obviously I've mostly failed that here for now, but hopefully that changes in the future
+I've had this idea for a while although its very badly executed here. i wanted to have an extremely diverse selection of tic tac toe variants and combinations and especially very large meta games. Obviously I've mostly failed that here for now, but hopefully that changes in the future
 
 **Play it online:** https://bookcatkid.github.io/amazing-tic-tac-toe/
 
